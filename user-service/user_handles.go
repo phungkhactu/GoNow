@@ -23,11 +23,22 @@ func AllUsersEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET a user by its ID
-func FindUserEndpoint(w http.ResponseWriter, r *http.Request) {
+func FindUserEndpointById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	user, err := UsersDao.FindById(params["id"])
 	if err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User ID")
+		return
+	}
+	utils.RespondWithJson(w, http.StatusOK, user)
+}
+
+// GET a user by its Type
+func FindUserEndpointByType(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	user, err := UsersDao.FindByType(params["type"])
+	if err != nil {
+		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User Type")
 		return
 	}
 	utils.RespondWithJson(w, http.StatusOK, user)
