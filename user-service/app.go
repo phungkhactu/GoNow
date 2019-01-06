@@ -1,8 +1,8 @@
 package main
 
 import (
-	. "GoNow/user-service/config"
-	. "GoNow/user-service/dao"
+	"GoNow/user-service/config"
+	"GoNow/user-service/dao"
 
 	"log"
 	"net/http"
@@ -10,9 +10,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var Config = Config{}
-var UsersDao = UsersDAO{}
-var LocationsDao = LocationsDAO{}
+// Config : variable handle toml config file
+var Config = config.Config{}
+
+// UsersDao : Database Access User Object
+var UsersDao = dao.UsersDAO{}
+
+// LocationsDao : Database Access Location Object
+var LocationsDao = dao.LocationsDAO{}
 
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
@@ -34,7 +39,7 @@ func main() {
 	r.HandleFunc("/users", CreateUserEndPoint).Methods("POST")
 	r.HandleFunc("/users", UpdateUserEndPoint).Methods("PUT")
 	r.HandleFunc("/users", DeleteUserEndPoint).Methods("DELETE")
-	r.HandleFunc("/users/{id}", FindUserEndpointById).Methods("GET")
+	r.HandleFunc("/users/{id}", FindUserEndpointByID).Methods("GET")
 	r.HandleFunc("/users/{type}", FindUserEndpointByType).Methods("GET")
 	r.HandleFunc("/localtions", AllLocationsEndPoint).Methods("GET")
 	r.HandleFunc("/localtions", CreateLocationEndPoint).Methods("POST")

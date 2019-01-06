@@ -6,13 +6,13 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	. "GoNow/user-service/models"
+	"GoNow/user-service/models"
 	"GoNow/user-service/utils"
 
 	"github.com/gorilla/mux"
 )
 
-// GET list of users
+// AllUsersEndPoint : GET list of users
 func AllUsersEndPoint(w http.ResponseWriter, r *http.Request) {
 	users, err := UsersDao.FindAll()
 	if err != nil {
@@ -22,8 +22,8 @@ func AllUsersEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, users)
 }
 
-// GET a user by its ID
-func FindUserEndpointById(w http.ResponseWriter, r *http.Request) {
+// FindUserEndpointByID : GET a user by its ID
+func FindUserEndpointByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	user, err := UsersDao.FindById(params["id"])
 	if err != nil {
@@ -33,7 +33,7 @@ func FindUserEndpointById(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, user)
 }
 
-// GET a user by its Type
+// FindUserEndpointByType : GET a user by its Type
 func FindUserEndpointByType(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	user, err := UsersDao.FindByType(params["type"])
@@ -44,10 +44,10 @@ func FindUserEndpointByType(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, user)
 }
 
-// POST a new user
+// CreateUserEndPoint : POST a new user
 func CreateUserEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var user User
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -60,10 +60,10 @@ func CreateUserEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusCreated, user)
 }
 
-// PUT update an existing user
+// UpdateUserEndPoint : PUT update an existing user
 func UpdateUserEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var user User
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -75,10 +75,10 @@ func UpdateUserEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
-// DELETE an existing user
+// DeleteUserEndPoint : DELETE an existing user
 func DeleteUserEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var user User
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return

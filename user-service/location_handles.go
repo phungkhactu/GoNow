@@ -6,13 +6,13 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	. "GoNow/user-service/models"
+	"GoNow/user-service/models"
 	"GoNow/user-service/utils"
 
 	"github.com/gorilla/mux"
 )
 
-// GET list of locations
+// AllLocationsEndPoint : GET list of locations
 func AllLocationsEndPoint(w http.ResponseWriter, r *http.Request) {
 	locations, err := LocationsDao.FindAll()
 	if err != nil {
@@ -22,7 +22,7 @@ func AllLocationsEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, locations)
 }
 
-// GET a location by its ID
+// FindLocationEndpoint : GET a location by its ID
 func FindLocationEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	location, err := LocationsDao.FindById(params["id"])
@@ -33,10 +33,10 @@ func FindLocationEndpoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, location)
 }
 
-// POST a new location
+// CreateLocationEndPoint : POST a new location
 func CreateLocationEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var location Location
+	var location models.Location
 	if err := json.NewDecoder(r.Body).Decode(&location); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -49,10 +49,10 @@ func CreateLocationEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusCreated, location)
 }
 
-// PUT update an existing location
+// UpdateLocationEndPoint : PUT update an existing location
 func UpdateLocationEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var location Location
+	var location models.Location
 	if err := json.NewDecoder(r.Body).Decode(&location); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -64,10 +64,10 @@ func UpdateLocationEndPoint(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
-// DELETE an existing location
+// DeleteLocationEndPoint : DELETE an existing location
 func DeleteLocationEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var location Location
+	var location models.Location
 	if err := json.NewDecoder(r.Body).Decode(&location); err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
