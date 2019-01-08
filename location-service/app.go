@@ -13,14 +13,17 @@ import (
 // Config : variable handle toml config file
 var Config = config.Config{}
 
-// PopularLocationsDao : Database Access Location Object
+// PopularLocationsDao : Database Access Popular Location Object
 var PopularLocationsDao = dao.PopularLocationsDAO{}
 
-// FoodPopularLocationsDao : Database Access Location Object
+// FoodPopularLocationsDao : Database Access Food Popular Location Object
 var FoodPopularLocationsDao = dao.FoodPopularLocationsDAO{}
 
-// RentBikeLocationsDao : Database Access Location Object
+// RentBikeLocationsDao : Database Access Rent Bike Location Object
 var RentBikeLocationsDao = dao.RentBikeLocationsDAO{}
+
+// AccommodationLocationsDao : Database Access Accommodation Location Object
+var AccommodationLocationsDao = dao.AccommodationLocationsDAO{}
 
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
@@ -37,6 +40,10 @@ func init() {
 	RentBikeLocationsDao.Server = Config.Server
 	RentBikeLocationsDao.Database = Config.Database
 	RentBikeLocationsDao.Connect()
+
+	AccommodationLocationsDao.Server = Config.Server
+	AccommodationLocationsDao.Database = Config.Database
+	AccommodationLocationsDao.Connect()
 }
 
 // Define HTTP request routes
@@ -59,6 +66,12 @@ func main() {
 	r.HandleFunc("/rentbikelocaltions", UpdateRentBikeLocationEndPoint).Methods("PUT")
 	r.HandleFunc("/rentbikelocaltions", DeleteRentBikeLocationEndPoint).Methods("DELETE")
 	r.HandleFunc("/rentbikelocaltions/{id}", FindRentBikeLocationEndpoint).Methods("GET")
+
+	r.HandleFunc("/accommodationlocaltions", AllRentBikeLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/accommodationlocaltions", CreateRentBikeLocationEndPoint).Methods("POST")
+	r.HandleFunc("/accommodationlocaltions", UpdateRentBikeLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/accommodationlocaltions", DeleteRentBikeLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/accommodationlocaltions/{id}", FindRentBikeLocationEndpoint).Methods("GET")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}
