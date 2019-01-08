@@ -25,7 +25,7 @@ func AllUsersEndPoint(w http.ResponseWriter, r *http.Request) {
 // FindUserEndpointByID : GET a user by its ID
 func FindUserEndpointByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	user, err := UsersDao.FindById(params["id"])
+	user, err := UsersDao.FindByID(params["id"])
 	if err != nil {
 		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User ID")
 		return

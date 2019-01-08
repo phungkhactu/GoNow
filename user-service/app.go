@@ -16,8 +16,8 @@ var Config = config.Config{}
 // UsersDao : Database Access User Object
 var UsersDao = dao.UsersDAO{}
 
-// LocationsDao : Database Access Location Object
-var LocationsDao = dao.LocationsDAO{}
+// UserLocationsDao : Database Access Location Object
+var UserLocationsDao = dao.UserLocationsDAO{}
 
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
@@ -27,9 +27,9 @@ func init() {
 	UsersDao.Database = Config.Database
 	UsersDao.Connect()
 
-	LocationsDao.Server = Config.Server
-	LocationsDao.Database = Config.Database
-	LocationsDao.Connect()
+	UserLocationsDao.Server = Config.Server
+	UserLocationsDao.Database = Config.Database
+	UserLocationsDao.Connect()
 }
 
 // Define HTTP request routes
@@ -41,11 +41,11 @@ func main() {
 	r.HandleFunc("/users", DeleteUserEndPoint).Methods("DELETE")
 	r.HandleFunc("/users/{id}", FindUserEndpointByID).Methods("GET")
 	r.HandleFunc("/users/{type}", FindUserEndpointByType).Methods("GET")
-	r.HandleFunc("/localtions", AllLocationsEndPoint).Methods("GET")
-	r.HandleFunc("/localtions", CreateLocationEndPoint).Methods("POST")
-	r.HandleFunc("/localtions", UpdateLocationEndPoint).Methods("PUT")
-	r.HandleFunc("/localtions", DeleteLocationEndPoint).Methods("DELETE")
-	r.HandleFunc("/localtions/{id}", FindLocationEndpoint).Methods("GET")
+	r.HandleFunc("/userlocaltions", AllUserLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/userlocaltions", CreateUserLocationEndPoint).Methods("POST")
+	r.HandleFunc("/userlocaltions", UpdateUserLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/userlocaltions", DeleteUserLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/userlocaltions/{id}", FindUserLocationEndpoint).Methods("GET")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}
