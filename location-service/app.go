@@ -19,6 +19,9 @@ var PopularLocationsDao = dao.PopularLocationsDAO{}
 // FoodPopularLocationsDao : Database Access Location Object
 var FoodPopularLocationsDao = dao.FoodPopularLocationsDAO{}
 
+// RentBikeLocationsDao : Database Access Location Object
+var RentBikeLocationsDao = dao.RentBikeLocationsDAO{}
+
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
 	Config.Read()
@@ -30,6 +33,10 @@ func init() {
 	FoodPopularLocationsDao.Server = Config.Server
 	FoodPopularLocationsDao.Database = Config.Database
 	FoodPopularLocationsDao.Connect()
+
+	RentBikeLocationsDao.Server = Config.Server
+	RentBikeLocationsDao.Database = Config.Database
+	RentBikeLocationsDao.Connect()
 }
 
 // Define HTTP request routes
@@ -40,11 +47,18 @@ func main() {
 	r.HandleFunc("/popularlocaltions", UpdatePopularLocationEndPoint).Methods("PUT")
 	r.HandleFunc("/popularlocaltions", DeletePopularLocationEndPoint).Methods("DELETE")
 	r.HandleFunc("/popularlocaltions/{id}", FindPopularLocationEndpoint).Methods("GET")
+
 	r.HandleFunc("/foodpopularlocaltions", AllPopularLocationsEndPoint).Methods("GET")
 	r.HandleFunc("/foodpopularlocaltions", CreatePopularLocationEndPoint).Methods("POST")
 	r.HandleFunc("/foodpopularlocaltions", UpdatePopularLocationEndPoint).Methods("PUT")
 	r.HandleFunc("/foodpopularlocaltions", DeletePopularLocationEndPoint).Methods("DELETE")
 	r.HandleFunc("/foodpopularlocaltions/{id}", FindPopularLocationEndpoint).Methods("GET")
+
+	r.HandleFunc("/rentbikelocaltions", AllRentBikeLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/rentbikelocaltions", CreateRentBikeLocationEndPoint).Methods("POST")
+	r.HandleFunc("/rentbikelocaltions", UpdateRentBikeLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/rentbikelocaltions", DeleteRentBikeLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/rentbikelocaltions/{id}", FindRentBikeLocationEndpoint).Methods("GET")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}
