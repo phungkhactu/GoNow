@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -6,11 +6,15 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
+	"GoNow/location-service/dao"
 	"GoNow/location-service/models"
 	"GoNow/location-service/utils"
 
 	"github.com/gorilla/mux"
 )
+
+// RentBikeLocationsDao : Database Access Rent Bike Location Object
+var RentBikeLocationsDao = dao.RentBikeLocationsDAO{}
 
 // AllRentBikeLocationsEndPoint : GET list of rentBike locations
 func AllRentBikeLocationsEndPoint(w http.ResponseWriter, r *http.Request) {

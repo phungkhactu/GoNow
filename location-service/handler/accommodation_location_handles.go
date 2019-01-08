@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -6,11 +6,15 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
+	"GoNow/location-service/dao"
 	"GoNow/location-service/models"
 	"GoNow/location-service/utils"
 
 	"github.com/gorilla/mux"
 )
+
+// AccommodationLocationsDao : Database Access Accommodation Location Object
+var AccommodationLocationsDao = dao.AccommodationLocationsDAO{}
 
 // AllAccommodationLocationsEndPoint : GET list of accommodation locations
 func AllAccommodationLocationsEndPoint(w http.ResponseWriter, r *http.Request) {

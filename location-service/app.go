@@ -2,7 +2,7 @@ package main
 
 import (
 	"GoNow/location-service/config"
-	"GoNow/location-service/dao"
+	"GoNow/location-service/handler"
 
 	"log"
 	"net/http"
@@ -13,65 +13,53 @@ import (
 // Config : variable handle toml config file
 var Config = config.Config{}
 
-// PopularLocationsDao : Database Access Popular Location Object
-var PopularLocationsDao = dao.PopularLocationsDAO{}
-
-// FoodPopularLocationsDao : Database Access Food Popular Location Object
-var FoodPopularLocationsDao = dao.FoodPopularLocationsDAO{}
-
-// RentBikeLocationsDao : Database Access Rent Bike Location Object
-var RentBikeLocationsDao = dao.RentBikeLocationsDAO{}
-
-// AccommodationLocationsDao : Database Access Accommodation Location Object
-var AccommodationLocationsDao = dao.AccommodationLocationsDAO{}
-
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
 	Config.Read()
 
-	PopularLocationsDao.Server = Config.Server
-	PopularLocationsDao.Database = Config.Database
-	PopularLocationsDao.Connect()
+	handler.PopularLocationsDao.Server = Config.Server
+	handler.PopularLocationsDao.Database = Config.Database
+	handler.PopularLocationsDao.Connect()
 
-	FoodPopularLocationsDao.Server = Config.Server
-	FoodPopularLocationsDao.Database = Config.Database
-	FoodPopularLocationsDao.Connect()
+	handler.FoodPopularLocationsDao.Server = Config.Server
+	handler.FoodPopularLocationsDao.Database = Config.Database
+	handler.FoodPopularLocationsDao.Connect()
 
-	RentBikeLocationsDao.Server = Config.Server
-	RentBikeLocationsDao.Database = Config.Database
-	RentBikeLocationsDao.Connect()
+	handler.RentBikeLocationsDao.Server = Config.Server
+	handler.RentBikeLocationsDao.Database = Config.Database
+	handler.RentBikeLocationsDao.Connect()
 
-	AccommodationLocationsDao.Server = Config.Server
-	AccommodationLocationsDao.Database = Config.Database
-	AccommodationLocationsDao.Connect()
+	handler.AccommodationLocationsDao.Server = Config.Server
+	handler.AccommodationLocationsDao.Database = Config.Database
+	handler.AccommodationLocationsDao.Connect()
 }
 
 // Define HTTP request routes
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/popularlocaltions", AllPopularLocationsEndPoint).Methods("GET")
-	r.HandleFunc("/popularlocaltions", CreatePopularLocationEndPoint).Methods("POST")
-	r.HandleFunc("/popularlocaltions", UpdatePopularLocationEndPoint).Methods("PUT")
-	r.HandleFunc("/popularlocaltions", DeletePopularLocationEndPoint).Methods("DELETE")
-	r.HandleFunc("/popularlocaltions/{id}", FindPopularLocationEndpoint).Methods("GET")
+	r.HandleFunc("/popularlocaltions", handler.AllPopularLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/popularlocaltions", handler.CreatePopularLocationEndPoint).Methods("POST")
+	r.HandleFunc("/popularlocaltions", handler.UpdatePopularLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/popularlocaltions", handler.DeletePopularLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/popularlocaltions/{id}", handler.FindPopularLocationEndpoint).Methods("GET")
 
-	r.HandleFunc("/foodpopularlocaltions", AllPopularLocationsEndPoint).Methods("GET")
-	r.HandleFunc("/foodpopularlocaltions", CreatePopularLocationEndPoint).Methods("POST")
-	r.HandleFunc("/foodpopularlocaltions", UpdatePopularLocationEndPoint).Methods("PUT")
-	r.HandleFunc("/foodpopularlocaltions", DeletePopularLocationEndPoint).Methods("DELETE")
-	r.HandleFunc("/foodpopularlocaltions/{id}", FindPopularLocationEndpoint).Methods("GET")
+	r.HandleFunc("/foodpopularlocaltions", handler.AllPopularLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/foodpopularlocaltions", handler.CreatePopularLocationEndPoint).Methods("POST")
+	r.HandleFunc("/foodpopularlocaltions", handler.UpdatePopularLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/foodpopularlocaltions", handler.DeletePopularLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/foodpopularlocaltions/{id}", handler.FindPopularLocationEndpoint).Methods("GET")
 
-	r.HandleFunc("/rentbikelocaltions", AllRentBikeLocationsEndPoint).Methods("GET")
-	r.HandleFunc("/rentbikelocaltions", CreateRentBikeLocationEndPoint).Methods("POST")
-	r.HandleFunc("/rentbikelocaltions", UpdateRentBikeLocationEndPoint).Methods("PUT")
-	r.HandleFunc("/rentbikelocaltions", DeleteRentBikeLocationEndPoint).Methods("DELETE")
-	r.HandleFunc("/rentbikelocaltions/{id}", FindRentBikeLocationEndpoint).Methods("GET")
+	r.HandleFunc("/rentbikelocaltions", handler.AllRentBikeLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/rentbikelocaltions", handler.CreateRentBikeLocationEndPoint).Methods("POST")
+	r.HandleFunc("/rentbikelocaltions", handler.UpdateRentBikeLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/rentbikelocaltions", handler.DeleteRentBikeLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/rentbikelocaltions/{id}", handler.FindRentBikeLocationEndpoint).Methods("GET")
 
-	r.HandleFunc("/accommodationlocaltions", AllRentBikeLocationsEndPoint).Methods("GET")
-	r.HandleFunc("/accommodationlocaltions", CreateRentBikeLocationEndPoint).Methods("POST")
-	r.HandleFunc("/accommodationlocaltions", UpdateRentBikeLocationEndPoint).Methods("PUT")
-	r.HandleFunc("/accommodationlocaltions", DeleteRentBikeLocationEndPoint).Methods("DELETE")
-	r.HandleFunc("/accommodationlocaltions/{id}", FindRentBikeLocationEndpoint).Methods("GET")
+	r.HandleFunc("/accommodationlocaltions", handler.AllRentBikeLocationsEndPoint).Methods("GET")
+	r.HandleFunc("/accommodationlocaltions", handler.CreateRentBikeLocationEndPoint).Methods("POST")
+	r.HandleFunc("/accommodationlocaltions", handler.UpdateRentBikeLocationEndPoint).Methods("PUT")
+	r.HandleFunc("/accommodationlocaltions", handler.DeleteRentBikeLocationEndPoint).Methods("DELETE")
+	r.HandleFunc("/accommodationlocaltions/{id}", handler.FindRentBikeLocationEndpoint).Methods("GET")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}

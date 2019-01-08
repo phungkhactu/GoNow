@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -6,11 +6,15 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
+	"GoNow/user-service/dao"
 	"GoNow/user-service/models"
 	"GoNow/user-service/utils"
 
 	"github.com/gorilla/mux"
 )
+
+// UsersDao : Database Access User Object
+var UsersDao = dao.UsersDAO{}
 
 // AllUsersEndPoint : GET list of users
 func AllUsersEndPoint(w http.ResponseWriter, r *http.Request) {
